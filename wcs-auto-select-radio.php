@@ -31,9 +31,22 @@
  * @since		1.0
  */
 
+/**
+ * Equeue the custom select radio script.
+ */
+
 function wcs_auto_select_radio() {
-    //if ( is_page( 'test-opc' ) ) {
-        wp_enqueue_script( 'wcs-auto-select-radio' , plugin_dir_url( __FILE__ ) . 'wcs-auto-select-radio.js', array( 'jquery' ), '1.0.0', true  );
-    //}
+	wp_enqueue_script( 'wcs-auto-select-radio' , plugin_dir_url( __FILE__ ) . 'wcs-auto-select-radio.js', array( 'jquery' ), '1.0.0', true  );
 }
-add_action( 'wp_enqueue_scripts', 'wcs_auto_select_radio' );
+add_action( 'plugins_loaded', 'wcs_jr_maybe_load_select' );
+
+/**
+ * Register our enqueuing function when One Page Checkout is loaded.
+ */
+
+function wcs_jr_maybe_load_select() {
+	if ( ! class_exists( 'PP_One_Page_Checkout' ) ) {
+		return;
+	}
+	add_action( 'wp_enqueue_scripts', 'wcs_auto_select_radio' );
+}
